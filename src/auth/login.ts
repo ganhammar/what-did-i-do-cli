@@ -31,7 +31,6 @@ export async function login() {
       if (accessTokenHasExpired()) {
         try {
           refresh();
-
           return;
         } catch { }
       }

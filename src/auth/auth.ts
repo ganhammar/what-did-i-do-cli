@@ -1,5 +1,6 @@
 // @ts-ignore
 import netrc from 'node-netrc';
+import { refresh } from './refresh.js';
 
 const HOST = 'wdid.fyi';
 
@@ -21,7 +22,27 @@ export function get() : Auth {
   return {
     accessToken: auth?.accessToken,
     refreshToken: auth?.refreshToken,
+    expiresAt: auth?.expiresAt,
   };
+}
+
+export async function getAccessToken() {
+  if (accessTokenHasExpired()) {
+    try {
+      await refresh();
+    } catch {
+      console.info('Login required');
+      process.exit(0);
+    }
+  }
+
+  const { accessToken } = get();
+
+  if (!accessToken) {
+    throw new Error('Something unexpected happened, try logging in again');
+  }
+
+  return accessToken;
 }
 
 export function accessTokenHasExpired() {

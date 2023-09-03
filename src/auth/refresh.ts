@@ -13,7 +13,7 @@ export async function refresh() {
     grant_type: 'refresh_token',
     refresh_token: refreshToken,
     client_id: 'what-did-i-do.cli',
-    scope: 'offline_access',
+    scope: 'offline_access offline_access openid profile email account event',
   });
 
   try {

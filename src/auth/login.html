@@ -65,7 +65,7 @@
 
       localStorage.setItem('code_verifier', codeVerifier);
 
-      window.location.href = `${authorizationEndpoint}?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&state=${state}&code_challenge=${codeChallenge}&code_challenge_method=S256&scope=offline_access`;
+      window.location.href = `${authorizationEndpoint}?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&state=${state}&code_challenge=${codeChallenge}&code_challenge_method=S256&scope=offline_access+openid+profile+email+account+event`;
     }
 
     function generateRandomCodeVerifier() {
