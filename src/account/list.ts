@@ -1,6 +1,13 @@
 import { getAccessToken } from '../auth/auth.js';
+import { arrayToTable } from '../utils/array-to-table.js';
 
-export async function list() {
+export type Account = {
+  id: string;
+  name: string;
+  createDate: string;
+};
+
+export async function list(print = true) {
   const token = await getAccessToken();
   const accountEndpoint = 'https://www.wdid.fyi/api/account';
 
@@ -13,7 +20,15 @@ export async function list() {
     headers,
   });
 
-  const result = await response.json();
+  if (!response.ok) {
+    throw new Error('Something unexpected happened, try logging in again');
+  }
 
-  console.table(result);
+  const result: Account[] = await response.json();
+
+  if (print) {
+    arrayToTable(result);
+  } else {
+    return result;
+  }
 }

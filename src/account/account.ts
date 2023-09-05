@@ -5,4 +5,4 @@ export const account = new Command('account');
 
 account.command('list')
   .description('List accounts')
-  .action(list);
+  .action(async () => { await list() });

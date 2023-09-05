@@ -27,16 +27,22 @@ export function get() : Auth {
 }
 
 export async function getAccessToken() {
+  const { accessToken } = get();
+
+  if (!accessToken) {
+    console.info('Login required');
+    process.exit(0);
+  }
+
   if (accessTokenHasExpired()) {
     try {
       await refresh();
     } catch {
       console.info('Login required');
+      clear();
       process.exit(0);
     }
   }
-
-  const { accessToken } = get();
 
   if (!accessToken) {
     throw new Error('Something unexpected happened, try logging in again');
@@ -64,4 +70,8 @@ export function update({ access_token, refresh_token, expires_in }: AuthResponse
     refreshToken: refresh_token,
     expiresAt: expiresAt.toISOString(),
   });
+}
+
+export function clear() {
+  netrc.update(HOST, {});
 }

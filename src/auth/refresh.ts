@@ -26,8 +26,6 @@ export async function refresh() {
     });
 
     if (!response.ok) {
-      const error = await response.json();
-      console.log(error);
       throw new Error('Unexpected response');
     }
 

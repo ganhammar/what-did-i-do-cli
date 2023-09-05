@@ -1,6 +1,7 @@
 import { Command } from 'commander';
 import { login } from './auth/login.js';
 import { account } from './account/account.js';
+import { event } from './event/event.js';
 
 const program = new Command();
 
@@ -14,5 +15,6 @@ program.command('login')
   .action(login);
 
 program.addCommand(account);
+program.addCommand(event);
 
 program.parse();
