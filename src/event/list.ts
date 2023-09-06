@@ -11,7 +11,14 @@ export type Event = {
   title: string;
 };
 
-export async function list() {
+type Options = {
+  limit: string;
+  fromDate: string;
+  toDate: string;
+  tag: string;
+};
+
+export async function list({ limit, fromDate, toDate, tag }: Options) {
   const token = await getAccessToken();
   const account = await getCurrentAccount();
 
@@ -21,7 +28,19 @@ export async function list() {
   headers.append('Authorization', `Bearer ${token}`);
   headers.append('Content-Type', 'application/json');
 
-  const response = await fetch(`${eventEndpoint}?accountId=${account}&limit=20`, {
+  let url = `${eventEndpoint}?accountid=${account}&limit=${limit}`;
+
+  if (fromDate) {
+    url += `&fromdate=${new Date(fromDate).toISOString()}`;
+  }
+  if (toDate) {
+    url += `&todate=${new Date(toDate).toISOString()}`;
+  }
+  if (tag) {
+    url += `&tag=${tag}`;
+  }
+
+  const response = await fetch(url, {
     method: 'GET',
     headers,
   });
