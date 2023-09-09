@@ -1,5 +1,5 @@
-import { getAccessToken } from '../auth/auth.js';
-import { arrayToTable } from '../utils/array-to-table.js';
+import { FormatInput, arrayToTable } from '../utils/array-to-table.js';
+import { getDefaultHeaders } from '../utils/default-headers.js';
 
 export type Account = {
   id: string;
@@ -8,12 +8,8 @@ export type Account = {
 };
 
 export async function list(print = true) {
-  const token = await getAccessToken();
+  const headers = await getDefaultHeaders();
   const accountEndpoint = 'https://www.wdid.fyi/api/account';
-
-  const headers = new Headers();
-  headers.append('Authorization', `Bearer ${token}`);
-  headers.append('Content-Type', 'application/json');
 
   const response = await fetch(accountEndpoint, {
     method: 'GET',
@@ -25,9 +21,14 @@ export async function list(print = true) {
   }
 
   const result: Account[] = await response.json();
+  const formatOptions: FormatInput = { columns: [
+    { key: 'id', name: 'Id', format: 'silent' },
+    { key: 'name', name: 'Name' },
+    { key: 'createDate', name: 'Created At' },
+  ]};
 
   if (print) {
-    arrayToTable(result);
+    arrayToTable(result.map(({ id, name, createDate }) => ({ name, createDate, id })), formatOptions);
   } else {
     return result;
   }
