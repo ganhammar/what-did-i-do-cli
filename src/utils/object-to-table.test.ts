@@ -12,7 +12,7 @@ describe('object-to-table', () => {
       test: 'test',
     });
 
-    expect(consoleMock).toHaveBeenCalled();
+    expect(consoleMock).toHaveBeenCalledOnce();
     expect(consoleMock).toHaveBeenCalledWith(`${chalk.gray('test     ')}test`);
   });
 });

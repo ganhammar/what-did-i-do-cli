@@ -25,7 +25,10 @@ export function arrayToTable(
 
   const headers = Object.keys(data[0]);
   const rows = data.map((row) => Object.values(row));
-  const columnWidths = headers.map((value) => value.length);
+  const columnWidths = headers.map(
+    (header) =>
+      (columns?.find(({ key }) => key === header)?.name ?? header).length
+  );
 
   const indexOptions = headers.map((header) => ({
     format: columns?.find(({ key }) => header === key)?.format ?? 'none',
@@ -65,9 +68,10 @@ function arrayToPaddedString(
 ) {
   return row
     .map((value, index) =>
-      formatValue(value, index, options).padEnd(
-        columnWidths[index] + SPACE_BETWEEN_VALUES,
-        ' '
+      formatValue(
+        toString(value).padEnd(columnWidths[index] + SPACE_BETWEEN_VALUES, ' '),
+        index,
+        options
       )
     )
     .join('');
@@ -79,8 +83,8 @@ function formatValue(
   options: FormatOptions[]
 ) {
   if (options[index].format === 'silent') {
-    return chalk.gray(toString(value));
+    return chalk.gray(value);
   }
 
-  return toString(value);
+  return value;
 }
