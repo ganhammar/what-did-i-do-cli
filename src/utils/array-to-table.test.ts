@@ -12,9 +12,11 @@ describe('array-to-table', () => {
   });
 
   it('formats the input as expected', () => {
-    arrayToTable([{
-      test: 'test',
-    }]);
+    arrayToTable([
+      {
+        test: 'test',
+      },
+    ]);
 
     expect(consoleMock).toHaveBeenCalledTimes(2);
     expect(consoleMock).toHaveBeenCalledWith(chalk.bold('test     '));
@@ -22,9 +24,14 @@ describe('array-to-table', () => {
   });
 
   it('changes the header if it is included in the format input', () => {
-    arrayToTable([{
-      test: 'test',
-    }], { columns: [{ key: 'test', name: 'Testing' }] });
+    arrayToTable(
+      [
+        {
+          test: 'test',
+        },
+      ],
+      { columns: [{ key: 'test', name: 'Testing' }] }
+    );
 
     expect(consoleMock).toHaveBeenCalledTimes(2);
     expect(consoleMock).toHaveBeenCalledWith(chalk.bold('Testing     '));
@@ -32,12 +39,19 @@ describe('array-to-table', () => {
   });
 
   it('grays the input if it is configured to be silent', () => {
-    arrayToTable([{
-      test: 'test',
-    }], { columns: [{ key: 'test', format: 'silent' }] });
+    arrayToTable(
+      [
+        {
+          test: 'test',
+        },
+      ],
+      { columns: [{ key: 'test', format: 'silent' }] }
+    );
 
     expect(consoleMock).toHaveBeenCalledTimes(2);
-    expect(consoleMock).toHaveBeenCalledWith(chalk.bold(chalk.grey('test     ')));
+    expect(consoleMock).toHaveBeenCalledWith(
+      chalk.bold(chalk.grey('test     '))
+    );
     expect(consoleMock).toHaveBeenCalledWith(chalk.grey('test     '));
   });
 
@@ -45,5 +59,5 @@ describe('array-to-table', () => {
     arrayToTable([]);
 
     expect(consoleMock).not.toHaveBeenCalled();
-  })
+  });
 });
