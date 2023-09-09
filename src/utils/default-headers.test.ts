@@ -14,5 +14,5 @@ describe('default-headers', () => {
     const result = await getDefaultHeaders();
 
     expect(result).toEqual(expected);
-  })
+  });
 });
