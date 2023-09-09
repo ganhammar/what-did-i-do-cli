@@ -3,7 +3,9 @@ import { toString } from './to-string.js';
 
 const EXTRA_SPACE = 5;
 
-export function objectToTable(data: Record<string, string | number | string[] | null>) {
+export function objectToTable(
+  data: Record<string, string | number | string[] | null>
+) {
   let width = 0;
 
   Object.keys(data).forEach((key) => {
@@ -13,6 +15,8 @@ export function objectToTable(data: Record<string, string | number | string[] | 
   });
 
   Object.entries(data).forEach(([key, value]) => {
-    console.log(`${chalk.gray(key.padEnd(width + EXTRA_SPACE))}${toString(value)}`);
+    console.log(
+      `${chalk.gray(key.padEnd(width + EXTRA_SPACE))}${toString(value)}`
+    );
   });
 }

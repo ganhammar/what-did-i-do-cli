@@ -23,7 +23,11 @@ export function list(options: Options) {
   return fetchEvents(options);
 }
 
-async function fetchEvents({ limit, fromDate, toDate, tag }: Options, paginationToken?: string, eventsFound = 0) {
+async function fetchEvents(
+  { limit, fromDate, toDate, tag }: Options,
+  paginationToken?: string,
+  eventsFound = 0
+) {
   const headers = await getDefaultHeaders();
   const account = await getCurrentAccount();
 
@@ -53,17 +57,28 @@ async function fetchEvents({ limit, fromDate, toDate, tag }: Options, pagination
     throw new Error('Something unexpected happened, try logging in again');
   }
 
-  const events: { items: Event[], paginationToken: string | null } = await response.json();
-  const formatOptions: FormatInput = { columns: [
-    { key: 'id', name: 'Id', format: 'silent' },
-    { key: 'title', name: 'Title' },
-    { key: 'description', name: 'Description' },
-    { key: 'tags', name: 'Tags' },
-    { key: 'date', name: 'Date' },
-  ]};
+  const events: { items: Event[]; paginationToken: string | null } =
+    await response.json();
+  const formatOptions: FormatInput = {
+    columns: [
+      { key: 'id', name: 'Id', format: 'silent' },
+      { key: 'title', name: 'Title' },
+      { key: 'description', name: 'Description' },
+      { key: 'tags', name: 'Tags' },
+      { key: 'date', name: 'Date' },
+    ],
+  };
 
-  arrayToTable(events.items.map(({ title, description, date, tags, id }) =>
-    ({ title, description, date, tags, id  })), formatOptions);
+  arrayToTable(
+    events.items.map(({ title, description, date, tags, id }) => ({
+      title,
+      description,
+      date,
+      tags,
+      id,
+    })),
+    formatOptions
+  );
 
   const eventsFoundCurrent = eventsFound + events.items.length;
 
@@ -72,16 +87,27 @@ async function fetchEvents({ limit, fromDate, toDate, tag }: Options, pagination
       {
         type: 'confirm',
         name: 'shouldFetchMore',
-        message: 'There are more events matching your query, do you want to load more?',
+        message:
+          'There are more events matching your query, do you want to load more?',
       },
     ]);
 
     if (answers.shouldFetchMore) {
-      await fetchEvents({ limit, fromDate, toDate, tag }, events.paginationToken, eventsFoundCurrent);
+      await fetchEvents(
+        { limit, fromDate, toDate, tag },
+        events.paginationToken,
+        eventsFoundCurrent
+      );
     } else {
-      console.log('\n', `Aborted listing events, found at least ${eventsFoundCurrent} matching events!`);
+      console.log(
+        '\n',
+        `Aborted listing events, found at least ${eventsFoundCurrent} matching events!`
+      );
     }
   } else {
-    console.log('\n', `That was all, found ${eventsFoundCurrent} matching events!`);
+    console.log(
+      '\n',
+      `That was all, found ${eventsFoundCurrent} matching events!`
+    );
   }
 }

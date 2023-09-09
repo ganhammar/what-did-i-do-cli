@@ -9,7 +9,10 @@ type Options = {
   tags?: string[];
 };
 
-export async function create(title: string, { description, date, tags }: Options) {
+export async function create(
+  title: string,
+  { description, date, tags }: Options
+) {
   const headers = await getDefaultHeaders();
   const accountId = await getCurrentAccount();
 

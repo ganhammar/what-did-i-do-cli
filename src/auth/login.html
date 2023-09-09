@@ -1,103 +1,110 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <meta charset='utf-8'>
-  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-  <title>What Did I Do?</title>
-  <meta name='viewport' content='width=device-width, initial-scale=1'>
-</head>
-<body>
-  <p id="message"></p>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>What Did I Do?</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <p id="message"></p>
 
-  <script>
-    const clientId = 'what-did-i-do.cli';
-    const redirectUri = window.location.origin;
-    const authorizationEndpoint = 'https://www.wdid.fyi/api/login/connect/authorize';
-    const tokenEndpoint = 'https://www.wdid.fyi/api/login/connect/token';
+    <script>
+      const clientId = 'what-did-i-do.cli';
+      const redirectUri = window.location.origin;
+      const authorizationEndpoint =
+        'https://www.wdid.fyi/api/login/connect/authorize';
+      const tokenEndpoint = 'https://www.wdid.fyi/api/login/connect/token';
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
-    const state = urlParams.get('state');
+      const urlParams = new URLSearchParams(window.location.search);
+      const code = urlParams.get('code');
+      const state = urlParams.get('state');
 
-    if (code && state) {
-      setMessage('Verifying login...');
-      const codeVerifier = localStorage.getItem('code_verifier');
-      localStorage.removeItem('code_verifier');
+      if (code && state) {
+        setMessage('Verifying login...');
+        const codeVerifier = localStorage.getItem('code_verifier');
+        localStorage.removeItem('code_verifier');
 
-      const tokenRequestBody = new URLSearchParams();
-      tokenRequestBody.append('grant_type', 'authorization_code');
-      tokenRequestBody.append('code', code);
-      tokenRequestBody.append('redirect_uri', redirectUri);
-      tokenRequestBody.append('client_id', clientId);
-      tokenRequestBody.append('code_verifier', codeVerifier);
+        const tokenRequestBody = new URLSearchParams();
+        tokenRequestBody.append('grant_type', 'authorization_code');
+        tokenRequestBody.append('code', code);
+        tokenRequestBody.append('redirect_uri', redirectUri);
+        tokenRequestBody.append('client_id', clientId);
+        tokenRequestBody.append('code_verifier', codeVerifier);
 
-      // Make a POST request to the token endpoint to exchange the code for an access token.
-      fetch(tokenEndpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: tokenRequestBody.toString(),
-      })
-      .then(response => response.json())
-      .then(data => fetch(window.location.origin, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      }))
-      .then(() => {
-        setMessage('All good, you can close this tab now.');
-      })
-      .catch(error => {
-        console.error('Token exchange error:', error);
-      });
-    } else {
-      setMessage('Redirecting to login...');
-      redirectToLogin();
-    }
-
-    async function redirectToLogin() {
-      const codeVerifier = generateRandomCodeVerifier();
-      const codeChallenge = await generateCodeChallenge(codeVerifier);
-      const state = generateRandomState();
-
-      localStorage.setItem('code_verifier', codeVerifier);
-
-      window.location.href = `${authorizationEndpoint}?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&state=${state}&code_challenge=${codeChallenge}&code_challenge_method=S256&scope=offline_access+openid+profile+email+account+event`;
-    }
-
-    function generateRandomCodeVerifier() {
-      const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-      let codeVerifier = '';
-      for (let i = 0; i < 128; i++) {
-        const randomIndex = Math.floor(Math.random() * charset.length);
-        codeVerifier += charset.charAt(randomIndex);
+        // Make a POST request to the token endpoint to exchange the code for an access token.
+        fetch(tokenEndpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: tokenRequestBody.toString(),
+        })
+          .then((response) => response.json())
+          .then((data) =>
+            fetch(window.location.origin, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(data),
+            })
+          )
+          .then(() => {
+            setMessage('All good, you can close this tab now.');
+          })
+          .catch((error) => {
+            console.error('Token exchange error:', error);
+          });
+      } else {
+        setMessage('Redirecting to login...');
+        redirectToLogin();
       }
-      return codeVerifier;
-    }
 
-    async function generateCodeChallenge(verifier) {
-      const encoder = new TextEncoder();
-      const data = encoder.encode(verifier);
-      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-      const codeChallenge = base64UrlEncode(new Uint8Array(hashBuffer));
-      return codeChallenge;
-    }
+      async function redirectToLogin() {
+        const codeVerifier = generateRandomCodeVerifier();
+        const codeChallenge = await generateCodeChallenge(codeVerifier);
+        const state = generateRandomState();
 
-    function base64UrlEncode(data) {
-      let base64 = btoa(String.fromCharCode.apply(null, data));
-      return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-    }
+        localStorage.setItem('code_verifier', codeVerifier);
 
-    function generateRandomState() {
-      return Math.random().toString(36).substring(7);
-    }
+        window.location.href = `${authorizationEndpoint}?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&state=${state}&code_challenge=${codeChallenge}&code_challenge_method=S256&scope=offline_access+openid+profile+email+account+event`;
+      }
 
-    function setMessage(message) {
-      document.getElementById('message').innerText = message;
-    }
-  </script>
-</body>
+      function generateRandomCodeVerifier() {
+        const charset =
+          'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let codeVerifier = '';
+        for (let i = 0; i < 128; i++) {
+          const randomIndex = Math.floor(Math.random() * charset.length);
+          codeVerifier += charset.charAt(randomIndex);
+        }
+        return codeVerifier;
+      }
+
+      async function generateCodeChallenge(verifier) {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(verifier);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        const codeChallenge = base64UrlEncode(new Uint8Array(hashBuffer));
+        return codeChallenge;
+      }
+
+      function base64UrlEncode(data) {
+        let base64 = btoa(String.fromCharCode.apply(null, data));
+        return base64
+          .replace(/\+/g, '-')
+          .replace(/\//g, '_')
+          .replace(/=+$/, '');
+      }
+
+      function generateRandomState() {
+        return Math.random().toString(36).substring(7);
+      }
+
+      function setMessage(message) {
+        document.getElementById('message').innerText = message;
+      }
+    </script>
+  </body>
 </html>

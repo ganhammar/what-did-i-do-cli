@@ -23,7 +23,8 @@ export async function login() {
       {
         type: 'confirm',
         name: 'shouldReAuthenticate',
-        message: 'It seems like you\'re already logged in. Do you want to re-authenticate?',
+        message:
+          "It seems like you're already logged in. Do you want to re-authenticate?",
       },
     ]);
 
@@ -32,7 +33,7 @@ export async function login() {
         try {
           refresh();
           return;
-        } catch { }
+        } catch {}
       }
 
       return;

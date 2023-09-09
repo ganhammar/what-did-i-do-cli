@@ -7,12 +7,12 @@
     "module": "node16",
     "sourceMap": true,
     "esModuleInterop": true,
-    "moduleResolution": "node16",
+    "moduleResolution": "node16"
   },
   "ts-node": {
     "esm": true,
     "compilerOptions": {
-      "module": "nodenext",
+      "module": "nodenext"
     }
   }
 }

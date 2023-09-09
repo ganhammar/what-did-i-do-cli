@@ -21,14 +21,19 @@ export async function list(print = true) {
   }
 
   const result: Account[] = await response.json();
-  const formatOptions: FormatInput = { columns: [
-    { key: 'id', name: 'Id', format: 'silent' },
-    { key: 'name', name: 'Name' },
-    { key: 'createDate', name: 'Created At' },
-  ]};
+  const formatOptions: FormatInput = {
+    columns: [
+      { key: 'id', name: 'Id', format: 'silent' },
+      { key: 'name', name: 'Name' },
+      { key: 'createDate', name: 'Created At' },
+    ],
+  };
 
   if (print) {
-    arrayToTable(result.map(({ id, name, createDate }) => ({ name, createDate, id })), formatOptions);
+    arrayToTable(
+      result.map(({ id, name, createDate }) => ({ name, createDate, id })),
+      formatOptions
+    );
   } else {
     return result;
   }

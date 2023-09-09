@@ -15,7 +15,10 @@ export type FormatInput = {
   }[];
 };
 
-export function arrayToTable(data: Record<string, string | number | string[] | null>[], { columns }: FormatInput = {}) {
+export function arrayToTable(
+  data: Record<string, string | number | string[] | null>[],
+  { columns }: FormatInput = {}
+) {
   if (!data?.length) {
     return;
   }
@@ -25,8 +28,7 @@ export function arrayToTable(data: Record<string, string | number | string[] | n
   const columnWidths = headers.map((value) => value.length);
 
   const indexOptions = headers.map((header) => ({
-    format: columns
-      ?.find(({ key }) => header === key)?.format ?? 'none',
+    format: columns?.find(({ key }) => header === key)?.format ?? 'none',
   }));
 
   rows.forEach((row) => {
@@ -39,24 +41,43 @@ export function arrayToTable(data: Record<string, string | number | string[] | n
     });
   });
 
-  console.log(chalk.bold(arrayToPaddedString(
-    headers.map((header) => columns?.find(({ key }) => key === header)?.name ?? header),
-    columnWidths,
-    indexOptions)));
+  console.log(
+    chalk.bold(
+      arrayToPaddedString(
+        headers.map(
+          (header) => columns?.find(({ key }) => key === header)?.name ?? header
+        ),
+        columnWidths,
+        indexOptions
+      )
+    )
+  );
 
   rows.forEach((row) => {
     console.log(arrayToPaddedString(row, columnWidths, indexOptions));
   });
 }
 
-function arrayToPaddedString(row: (string | number | string[] | null)[], columnWidths: number[], options: FormatOptions[]) {
+function arrayToPaddedString(
+  row: (string | number | string[] | null)[],
+  columnWidths: number[],
+  options: FormatOptions[]
+) {
   return row
-    .map((value, index) => formatValue(value, index, options)
-      .padEnd(columnWidths[index] + SPACE_BETWEEN_VALUES, ' '))
-    .join('')
+    .map((value, index) =>
+      formatValue(value, index, options).padEnd(
+        columnWidths[index] + SPACE_BETWEEN_VALUES,
+        ' '
+      )
+    )
+    .join('');
 }
 
-function formatValue(value: string | number | string[] | null, index: number, options: FormatOptions[]) {
+function formatValue(
+  value: string | number | string[] | null,
+  index: number,
+  options: FormatOptions[]
+) {
   if (options[index].format === 'silent') {
     return chalk.gray(toString(value));
   }

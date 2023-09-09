@@ -13,17 +13,11 @@ export function formatRelativeDate(date: Date) {
 
   const millis = getUTCTime(date);
   const diff = millis - getCurrentUTCTime();
-      
+
   if (Math.abs(diff) > WEEK_IN_MILLIS)
-    return intl.format(
-      Math.trunc(diff / WEEK_IN_MILLIS),
-      'week'
-    );
+    return intl.format(Math.trunc(diff / WEEK_IN_MILLIS), 'week');
   else if (Math.abs(diff) > DAY_IN_MILLIS)
-    return intl.format(
-      Math.trunc(diff / DAY_IN_MILLIS),
-      'day'
-    );
+    return intl.format(Math.trunc(diff / DAY_IN_MILLIS), 'day');
   else if (Math.abs(diff) > HOUR_IN_MILLIS)
     return intl.format(
       Math.trunc((diff % DAY_IN_MILLIS) / HOUR_IN_MILLIS),

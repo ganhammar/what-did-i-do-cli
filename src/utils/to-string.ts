@@ -1,4 +1,4 @@
-import { formatRelativeDate } from "./format-relative-date.js";
+import { formatRelativeDate } from './format-relative-date.js';
 
 export function toString(value: string | number | string[] | null) {
   if (Array.isArray(value)) {
@@ -6,6 +6,6 @@ export function toString(value: string | number | string[] | null) {
   } else if (typeof value === 'string' && Date.parse(value)) {
     return formatRelativeDate(new Date(value));
   }
-  
+
   return value?.toString() ?? '';
 }

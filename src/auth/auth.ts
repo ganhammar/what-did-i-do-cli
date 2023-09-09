@@ -16,7 +16,7 @@ export type AuthResponse = {
   expires_in: number;
 };
 
-export function get() : Auth {
+export function get(): Auth {
   const auth = netrc(HOST);
 
   return {
@@ -61,7 +61,11 @@ export function accessTokenHasExpired() {
   return new Date(auth.expiresAt) <= new Date();
 }
 
-export function update({ access_token, refresh_token, expires_in }: AuthResponse) {
+export function update({
+  access_token,
+  refresh_token,
+  expires_in,
+}: AuthResponse) {
   const expiresAt = new Date();
   expiresAt.setSeconds(expiresAt.getSeconds() + expires_in);
 
