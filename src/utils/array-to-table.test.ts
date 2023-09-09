@@ -23,6 +23,18 @@ describe('array-to-table', () => {
     expect(consoleMock).toHaveBeenCalledWith('test     ');
   });
 
+  it('adapts the column width after the values', () => {
+    arrayToTable([
+      {
+        test: 'testing',
+      },
+    ]);
+
+    expect(consoleMock).toHaveBeenCalledTimes(2);
+    expect(consoleMock).toHaveBeenCalledWith(chalk.bold('test        '));
+    expect(consoleMock).toHaveBeenCalledWith('testing     ');
+  });
+
   it('changes the header if it is included in the format input', () => {
     arrayToTable(
       [
