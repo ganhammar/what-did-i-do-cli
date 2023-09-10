@@ -10,8 +10,8 @@
   "scripts": {
     "build": "tsc",
     "start": "ts-node src/index.ts",
-    "test": "vitest run --coverage",
-    "test:watch": "vitest",
+    "test": "export TZ='Europe/Stockholm' && vitest run --coverage",
+    "test:watch": "export TZ='Europe/Stockholm' && vitest",
     "styling": "prettier . --write",
     "styling:ci": "prettier . --check"
   },

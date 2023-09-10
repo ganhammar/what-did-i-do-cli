@@ -27,6 +27,7 @@ import inquirer from 'inquirer';
 describe('list', () => {
   beforeEach(() => {
     vi.resetAllMocks();
+    vi.useFakeTimers();
   });
 
   [
