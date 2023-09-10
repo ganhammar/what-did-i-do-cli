@@ -13,6 +13,10 @@ export async function create(
   title: string,
   { description, date, tags }: Options
 ) {
+  if (!title) {
+    throw new Error('Title is required');
+  }
+
   const headers = await getDefaultHeaders();
   const accountId = await getCurrentAccount();
 
