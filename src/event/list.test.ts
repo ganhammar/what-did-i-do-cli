@@ -74,7 +74,20 @@ describe('list', () => {
     const paginationToken = '123';
     fetchMock.mockResolvedValueOnce({
       ok: true,
-      json: () => Promise.resolve({ items: [], paginationToken }),
+      json: () =>
+        Promise.resolve({
+          items: [
+            {
+              title: 'test',
+              description: 'test',
+              date: '2023-09-10T08:00:00.000Z',
+              tags: 'test',
+              id: '123',
+              accountId: '456',
+            },
+          ],
+          paginationToken,
+        }),
     });
     (inquirer.prompt as any).mockResolvedValueOnce({
       shouldFetchMore: false,
@@ -85,7 +98,7 @@ describe('list', () => {
     expect(inquirer.prompt as any).toHaveBeenCalledOnce();
     expect(consoleMock).toHaveBeenCalledWith(
       '\n',
-      'Aborted listing events, found at least 0 matching events!'
+      'Aborted listing events, found at least 1 matching events!'
     );
   });
 
