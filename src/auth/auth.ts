@@ -27,7 +27,7 @@ export function get(): Auth {
 }
 
 export async function getAccessToken() {
-  const { accessToken } = get();
+  let { accessToken } = get();
 
   if (!accessToken) {
     console.info('Login required');
@@ -37,6 +37,9 @@ export async function getAccessToken() {
   if (accessTokenHasExpired()) {
     try {
       await refresh();
+
+      const updatedAuth = get();
+      accessToken = updatedAuth.accessToken;
     } catch {
       console.info('Login required');
       clear();
