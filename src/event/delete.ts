@@ -2,11 +2,11 @@ import chalk from 'chalk';
 import { getDefaultHeaders } from '../utils/default-headers.js';
 
 export async function remove(id: string) {
-  const headers = await getDefaultHeaders();
-
   if (!id) {
     throw new Error(`Invalid id supplied, got "${id}"`);
   }
+
+  const headers = await getDefaultHeaders();
 
   const eventEndpoint = 'https://www.wdid.fyi/api/event';
 

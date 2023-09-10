@@ -28,6 +28,12 @@ async function fetchEvents(
   paginationToken?: string,
   eventsFound = 0
 ) {
+  if (Number.isNaN(parseInt(limit, 10))) {
+    throw new Error(
+      `Invalid value for limit supplied, got "${limit}", it needs to be a number`
+    );
+  }
+
   const headers = await getDefaultHeaders();
   const account = await getCurrentAccount();
 
