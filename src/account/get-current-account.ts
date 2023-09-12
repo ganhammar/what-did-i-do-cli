@@ -31,4 +31,6 @@ export async function getCurrentAccount() {
   }
 
   netrc.update(HOST, { account });
+
+  return account;
 }
