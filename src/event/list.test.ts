@@ -32,19 +32,19 @@ describe('list', () => {
   [
     [
       { limit: '20', fromDate: '', toDate: '', tag: '' },
-      'https://www.wdid.fyi/api/event?accountid=123&limit=20',
+      'https://www.wdid.fyi/api/event?accountId=123&limit=20',
     ],
     [
       { limit: '20', fromDate: '', toDate: '', tag: 'test' },
-      'https://www.wdid.fyi/api/event?accountid=123&limit=20&tag=test',
+      'https://www.wdid.fyi/api/event?accountId=123&limit=20&tag=test',
     ],
     [
       { limit: '20', fromDate: '2023-09-10 10:00:00', toDate: '', tag: '' },
-      'https://www.wdid.fyi/api/event?accountid=123&limit=20&fromdate=2023-09-10T08:00:00.000Z',
+      'https://www.wdid.fyi/api/event?accountId=123&limit=20&fromDate=2023-09-10T08:00:00.000Z',
     ],
     [
       { limit: '20', fromDate: '', toDate: '2023-09-10 10:00:00', tag: '' },
-      'https://www.wdid.fyi/api/event?accountid=123&limit=20&todate=2023-09-10T08:00:00.000Z',
+      'https://www.wdid.fyi/api/event?accountId=123&limit=20&toDate=2023-09-10T08:00:00.000Z',
     ],
   ].forEach(([data, url], index) => {
     it(`calls the correct endpoint and logs the result (${index})`, async () => {
@@ -64,7 +64,6 @@ describe('list', () => {
       });
       expect(consoleMock).toHaveBeenCalled();
       expect(consoleMock).toHaveBeenCalledWith(
-        '\n',
         'That was all, found 0 matching events!'
       );
     });
@@ -121,7 +120,6 @@ describe('list', () => {
     expect(inquirer.prompt as any).toHaveBeenCalledOnce();
     expect(fetchMock).toHaveBeenCalledTimes(2);
     expect(consoleMock).toHaveBeenCalledWith(
-      '\n',
       'That was all, found 0 matching events!'
     );
   });
@@ -137,7 +135,7 @@ describe('list', () => {
 
     expect(fetchMock).toHaveBeenCalledOnce();
     expect(fetchMock).toHaveBeenCalledWith(
-      'https://www.wdid.fyi/api/event?accountid=123&limit=20',
+      'https://www.wdid.fyi/api/event?accountId=123&limit=20',
       {
         method: 'GET',
         headers: {},

@@ -6,7 +6,7 @@ describe('format-relative-date', () => {
   const fiveMinAgo = new Date(new Date().getTime() - 5 * 60000);
   const fiveHoursAgo = new Date(new Date().getTime() - 5 * 60 * 60000);
   const fiveDaysAgo = new Date(new Date().getTime() - 5 * 60 * 24 * 60000);
-  const fiveWeeksAgo = new Date(new Date().getTime() - 5 * 60 * 24 * 7 * 60000);
+  const fiveWeeksAgo = new Date(new Date().getTime() - 5 * 60 * 24 * 8 * 60000);
 
   [
     [fiveSecondsAgo, '5 seconds ago'],

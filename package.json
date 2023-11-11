@@ -7,6 +7,10 @@
   "engines": {
     "node": ">=16"
   },
+  "main": "./dist/index.js",
+  "bin": {
+    "wdid": "./dist/index.js"
+  },
   "scripts": {
     "build": "tsc",
     "start": "ts-node src/index.ts",

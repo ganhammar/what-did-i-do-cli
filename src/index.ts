@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { Command } from 'commander';
 import { login } from './auth/login.js';
 import { account } from './account/account.js';

@@ -39,13 +39,13 @@ async function fetchEvents(
 
   const eventEndpoint = 'https://www.wdid.fyi/api/event';
 
-  let url = `${eventEndpoint}?accountid=${account}&limit=${limit}`;
+  let url = `${eventEndpoint}?accountId=${account}&limit=${limit}`;
 
   if (fromDate) {
-    url += `&fromdate=${new Date(fromDate).toISOString()}`;
+    url += `&fromDate=${new Date(fromDate).toISOString()}`;
   }
   if (toDate) {
-    url += `&todate=${new Date(toDate).toISOString()}`;
+    url += `&toDate=${new Date(toDate).toISOString()}`;
   }
   if (tag) {
     url += `&tag=${tag}`;
@@ -111,8 +111,11 @@ async function fetchEvents(
       );
     }
   } else {
+    if (eventsFoundCurrent > 0) {
+      console.log('\n');
+    }
+
     console.log(
-      '\n',
       `That was all, found ${eventsFoundCurrent} matching events!`
     );
   }
