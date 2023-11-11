@@ -12,7 +12,8 @@
     "wdid": "./dist/index.js"
   },
   "scripts": {
-    "build": "tsc",
+    "copy-html": "copyfiles -u 1 src/**/*.html dist",
+    "build": "tsc && npm run copy-html",
     "start": "ts-node src/index.ts",
     "test": "export TZ='Europe/Stockholm' && vitest run --coverage",
     "test:watch": "export TZ='Europe/Stockholm' && vitest",
@@ -42,6 +43,7 @@
     "@types/inquirer": "^9.0.3",
     "@types/node": "^20.5.7",
     "@vitest/coverage-v8": "^0.34.4",
+    "copyfiles": "^2.4.1",
     "prettier": "^3.0.3",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2",

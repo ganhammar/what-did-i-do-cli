@@ -115,8 +115,6 @@ async function fetchEvents(
       console.log('\n');
     }
 
-    console.log(
-      `That was all, found ${eventsFoundCurrent} matching events!`
-    );
+    console.log(`That was all, found ${eventsFoundCurrent} matching events!`);
   }
 }
