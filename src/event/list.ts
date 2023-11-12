@@ -112,7 +112,7 @@ async function fetchEvents(
     }
   } else {
     if (eventsFoundCurrent > 0) {
-      console.log('\n');
+      console.log('');
     }
 
     console.log(`That was all, found ${eventsFoundCurrent} matching events!`);
